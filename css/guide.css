@@ -1,0 +1,185 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background-color: black!important;
+    font-family: 'Montserrat', sans-serif;
+    overflow-x: hidden;
+}
+
+
+
+.nav-link { 
+    color: white!important;
+    font-family: 'Montserrat', sans-serif;
+    
+}
+
+.nav-link:hover {
+    color: #adb5bd!important;
+    
+}
+
+.logo_shablya img {
+    height: 50vh;
+}
+
+.nav_shablya_links {
+    border-color: red!important;
+}
+
+#guide_navs {
+    margin-left: 100px!important;
+}
+
+
+
+img {
+    width: 250px;
+    align-items: center;
+}
+
+
+.nav-pills .nav-link.active, .nav-pills .show>.nav-link {
+    background-color: white;
+}
+
+.nav-link.active {
+    color: black!important;
+}
+
+
+.tab-content {
+    margin-left: 50px;
+    margin-top: 100px;
+    width: 100%;
+    text-align: center;
+    padding-left: 280px;
+    color: white;
+}
+
+svg {
+    width: 25px;
+    height: 25px;
+}
+
+
+
+.d-flex {
+    margin-left: 50px;
+    font-size: 40px;
+    text-align: start;
+    
+}
+
+
+
+
+
+#v-pills-tab {
+    position: fixed;
+    
+}
+
+.guide_install {
+    margin-top: 15px;
+    margin-right: 100px;
+    margin-left: 20px;
+    
+}
+.guide_info {
+    margin-left: 20px;
+    margin-right: 100px;
+}
+
+.guide_install h3 {
+    margin-bottom: 15px;
+}
+
+
+.guide_install pre {
+    font-size: 25px;
+    background-color: #fff;
+    color: #000;
+    padding: 1rem 1.5rem;
+    width: 100%;
+    font-weight: 700;
+    border-radius: 10px;
+    margin-left: 10px;
+
+}
+
+.guide_img {
+    width: 1400px;
+    margin-bottom: 20px;
+
+}
+
+.guide_code_large {
+    text-align: start;
+}
+
+.guide_rent img {
+    width: 150px;
+}
+
+
+body::-webkit-scrollbar {
+    width: 12px;               /* width of the entire scrollbar */
+  }
+  
+  body::-webkit-scrollbar-track {
+    background: rgb(0, 0, 0);        /* color of the tracking area */
+  }
+  
+  body::-webkit-scrollbar-thumb {
+    background-color: #fff;    /* color of the scroll thumb */
+    border-radius: 20px;       /* roundness of the scroll thumb */
+    border: 3px solid #000;  /* creates padding around scroll thumb */
+  }
+
+ 
+  @media(max-width:961px) {
+    .d-flex {
+        margin-left: 10px;
+        font-size: 15px;
+    }
+    img {
+        width:105px;
+        align-items: center;
+    }
+
+    .tab-content {
+        margin-left: 50px;
+        margin-top: 20px;
+        width: 100%;
+        text-align: center;
+        padding-left: 70px;
+    }
+
+    .tab-pane h2, h3 {
+        font-size: 15px;
+    }
+
+    .guide_install pre {
+        font-size: 10px;
+    }
+
+    .guide_img {
+        width: 230px;
+    }
+
+    .guide_rent img {
+        width: 100px;
+        margin-left: 5px;
+        margin-bottom: 10px;
+    }
+    
+    iframe {
+        width: 230px;
+        height: 230px;
+    }
+    
+  }
