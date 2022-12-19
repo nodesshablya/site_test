@@ -29,6 +29,10 @@ body {
     border-color: red!important;
 }
 
+#end {
+    filter: grayscale(1);
+} 
+
 .card-img-overlay {
     background: rgba(0, 0, 0, 0.7);
     

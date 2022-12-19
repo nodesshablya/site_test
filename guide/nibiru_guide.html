@@ -10,7 +10,7 @@
       integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65"
       crossorigin="anonymous"
     />
-    <link rel="stylesheet" href="../css/guide.css" />
+    <link rel="stylesheet" href="/css/guide.css" />
     <title>Document</title>
   </head>
   <body>
@@ -21,7 +21,7 @@
         role="tablist"
         aria-orientation="vertical"
       >
-        <img src="../images/logo.png" alt="" />
+        <a href="../index.html"><img src="/images/logo.png" alt="" /></a>
 
         <button
           class="nav-link active"
@@ -69,7 +69,7 @@
         >
           <div class="guide_info">
             <img
-              src="../images/nibiru_logo.jpg"
+              src="/images/nibiru_logo.jpg"
               class="rounded-circle"
               alt="..."
             />
@@ -77,11 +77,8 @@
 
             <div class="guide_rent">
               <h3>Rent servers</h3>
-              <a href="https://contabo.com/en/"
-                ><img src="../images/contabo.svg" alt=""
-              /></a>
               <a href="https://hetzner.cloud/?ref=LD1Z3CMZvXq4"
-                ><img src="../images/hetzner.svg" alt=""
+                ><img src="/images/hetzner.svg" alt=""
               /></a>
             </div>
             <a href="https://discord.com/invite/VG4MrDSGDV">
@@ -133,7 +130,7 @@
 wget -q -O nibiru.sh https://raw.githubusercontent.com/nodesshablya/nibiru_shablya_testnet/main/nibiru.sh && chmod +x nibiru.sh && sudo /bin/bash nibiru.sh</pre
             >
             <h3>Enter node name</h3>
-            <img class="guide_img" src="../images/nibiru_about.png" alt="" />
+            <img class="guide_img" src="/images/nibiru_about.png" alt="" />
             <pre>source $HOME/.bash_profile</pre>
             <h3>Checking the sync</h3>
             <pre>curl localhost:26657/status</pre>
@@ -229,6 +226,7 @@ rm -rf $(which nibid) ~/.nibid ~/nibiru</pre
               title="NIBIRU - УСТАНОВКА НОДЫ - TESTNET"
               frameborder="0"
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowfullscreen
             ></iframe>
           </div>
         </div>
