@@ -125,44 +125,164 @@
             </a>
           </div>
           <div class="guide_install">
-            <h3>Quick installation</h3>
-            <pre>
-wget -q -O nibiru.sh https://raw.githubusercontent.com/nodesshablya/nibiru_shablya_testnet/main/nibiru.sh && chmod +x nibiru.sh && sudo /bin/bash nibiru.sh</pre
+            <h3>Update packages and Install dependencies</h3>
+            <pre class="guide_code_large">
+sudo apt update && sudo apt upgrade -y
+sudo apt install curl git wget htop tmux build-essential jq make gcc -y</pre
             >
-            <h3>Enter node name</h3>
-            <img class="guide_img" src="../images/nibiru_about.png" alt="" />
-            <pre>source $HOME/.bash_profile</pre>
-            <h3>Checking the sync</h3>
-            <pre>curl localhost:26657/status</pre>
-            <h3>Сheck the node logs</h3>
-            <pre>journalctl -u nibid -f -o cat</pre>
+            <h3>
+              Replace your moniker "YOUR_MONIKER", save and import variables
+              into system
+            </h3>
+            <pre class="guide_code_large">
+NIBIRU_PORT=12
+echo "export NIBIRU_WALLET="wallet"" >> $HOME/.bash_profile
+echo "export NIBIRU_MONIKER="YOUR_MONIKER"" >> $HOME/.bash_profile
+echo "export NIBIRU_CHAIN_ID="nibiru-testnet-2"" >> $HOME/.bash_profile
+echo "export NIBIRU_PORT="${NIBIRU_PORT}"" >> $HOME/.bash_profile
+source $HOME/.bash_profile</pre
+            >
+
+            <h3>Install GO</h3>
+            <pre class="guide_code_large">
+cd $HOME
+VER="1.19.3"
+wget "https://golang.org/dl/go$VER.linux-amd64.tar.gz"
+sudo tar -C /usr/local -xzf "go$VER.linux-amd64.tar.gz"
+rm -rf  "go$VER.linux-amd64.tar.gz"
+echo "export PATH=$PATH:/usr/local/go/bin:$HOME/go/bin" >> $HOME/.bash_profile
+source $HOME/.bash_profile
+go version</pre
+            >
+            <h3>Download and build binaries</h3>
+            <pre class="guide_code_large">
+cd $HOME
+git clone https://github.com/NibiruChain/nibiru
+cd nibiru
+git checkout v0.16.2
+make install</pre
+            >
+            <h3>Config and init app</h3>
+            <pre class="guide_code_large">
+nibid config node tcp://localhost:${NIBIRU_PORT}657
+nibid config chain-id $NIBIRU_CHAIN_ID
+nibid config keyring-backend test
+nibid init $NIBIRU_MONIKER --chain-id $NIBIRU_CHAIN_ID</pre
+            >
+            <h3>Download and copy genesis file</h3>
+            <pre class="guide_code_large">
+NETWORK=nibiru-testnet-2
+curl -s https://networks.testnet.nibiru.fi/$NETWORK/genesis > $HOME/.nibid/config/genesis.json</pre
+            >
+            <h3>Set seeds and peers</h3>
+            <pre class="guide_code_large">
+NETWORK=nibiru-testnet-2
+sed -i 's|seeds =.*|seeds = "'$(curl -s https://networks.testnet.nibiru.fi/$NETWORK/seeds)'"|g' $HOME/.nibid/config/config.toml</pre
+            >
+            <h3>Set custom ports in app.toml file</h3>
+            <pre class="guide_code_large">
+sed -i.bak -e "s%^address = \"tcp://0.0.0.0:1317\"%address = \"tcp://0.0.0.0:${NIBIRU_PORT}317\"%;
+s%^address = \":8080\"%address = \":${NIBIRU_PORT}080\"%;
+s%^address = \"0.0.0.0:9090\"%address = \"0.0.0.0:${NIBIRU_PORT}090\"%; 
+s%^address = \"0.0.0.0:9091\"%address = \"0.0.0.0:${NIBIRU_PORT}091\"%; 
+s%^address = \"0.0.0.0:8545\"%address = \"0.0.0.0:${NIBIRU_PORT}545\"%; 
+s%^ws-address = \"0.0.0.0:8546\"%ws-address = \"0.0.0.0:${NIBIRU_PORT}546\"%" $HOME/.nibid/config/app.toml</pre
+            >
+            <h3>Set custom ports in config.toml file</h3>
+            <pre class="guide_code_large">
+sed -i.bak -e "s%^proxy_app = \"tcp://127.0.0.1:26658\"%proxy_app = \"tcp://127.0.0.1:${NIBIRU_PORT}658\"%; 
+s%^laddr = \"tcp://127.0.0.1:26657\"%laddr = \"tcp://0.0.0.0:${NIBIRU_PORT}657\"%; 
+s%^pprof_laddr = \"localhost:6060\"%pprof_laddr = \"localhost:${NIBIRU_PORT}060\"%;
+s%^laddr = \"tcp://0.0.0.0:26656\"%laddr = \"tcp://0.0.0.0:${NIBIRU_PORT}656\"%;
+s%^external_address = \"\"%external_address = \"$(wget -qO- eth0.me):${NIBIRU_PORT}656\"%;
+s%^prometheus_listen_addr = \":26660\"%prometheus_listen_addr = \":${NIBIRU_PORT}660\"%" $HOME/.nibid/config/config.toml</pre
+            >
+            <h3>Config pruning</h3>
+            <pre class="guide_code_large">
+sed -i -e "s/^pruning *=.*/pruning = \"nothing\"/" $HOME/.nibid/config/app.toml
+sed -i -e "s/^pruning-keep-recent *=.*/pruning-keep-recent = \"100\"/" $HOME/.nibid/config/app.toml
+sed -i -e "s/^pruning-interval *=.*/pruning-interval = \"50\"/" $HOME/.nibid/config/app.toml</pre
+            >
+            <h3>
+              Set minimum gas price, enable prometheus and disable indexing
+            </h3>
+            <pre class="guide_code_large">
+sed -i 's/minimum-gas-prices =.*/minimum-gas-prices = "0.025unibi"/g' $HOME/.nibid/config/app.toml
+sed -i -e "s/prometheus = false/prometheus = true/" $HOME/.nibid/config/config.toml
+sed -i -e "s/^indexer *=.*/indexer = \"null\"/" $HOME/.nibid/config/config.toml</pre
+            >
+            <h3>Clean old data</h3>
+            <pre>
+nibid tendermint unsafe-reset-all --home $HOME/.nibid --keep-addr-book</pre
+            >
+            <h3>Create Service file</h3>
+            <pre class="guide_code_large">
+sudo tee /etc/systemd/system/nibid.service > /dev/null <code><<</code>EOF
+[Unit]
+Description=nibiru
+After=network-online.target
+              
+[Service]
+User=$USER
+ExecStart=$(which nibid) start --home $HOME/.nibid
+Restart=on-failure
+RestartSec=3
+LimitNOFILE=65535
+              
+[Install]
+WantedBy=multi-user.target
+EOF</pre
+            >
+            <h3>Enable and start service file</h3>
+            <pre class="guide_code_large">
+sudo systemctl daemon-reload
+sudo systemctl enable nibid
+sudo systemctl restart nibid && sudo journalctl -u nibid -f</pre
+            >
             <h3>Create a wallet, don’t forget to save the mnemonic.</h3>
             <pre>nibid keys add wallet</pre>
+            <h3>
+              To restore exexuting wallet, use the following command (optional)
+            </h3>
+            <pre>nibid keys add wallet --recover</pre>
+
+            <h3>Save wallet and validator address</h3>
+            <pre class="guide_code_large">
+NIBIRU_WALLET_ADDRESS=$(nibid keys show $NIBIRU_WALLET -a)
+NIBIRU_VALOPER_ADDRESS=$(nibid keys show $NIBIRU_WALLET --bech val -a)
+echo "export NIBIRU_WALLET_ADDRESS="${NIBIRU_WALLET_ADDRESS} >> $HOME/.bash_profile
+echo "export NIBIRU_VALOPER_ADDRESS="${NIBIRU_VALOPER_ADDRESS} >> $HOME/.bash_profile
+source $HOME/.bash_profile</pre
+            >
+            <h3>
+              After full synchronization, check the balance, if everything is
+              okay go to the next step.
+            </h3>
             <h3>
               Get tokens in the
               <a class="out_link" href="discord.com">discord</a>, #faucet
               section.
             </h3>
             <h3>
-              After full synchronization, check the balance, if everything is
-              okay go to the next step.
+              How check Sync status - if false - your node is fully synced
             </h3>
-            <pre>nibid q bank balances ВАШАДРЕСКОШЕЛЬКА</pre>
+            <pre>nibid status 2>&1 | jq .SyncInfo</pre>
+            <h3>Check your balance (replace your YOUR_WALLET_ADDRESS)</h3>
+            <pre>nibid q bank balances YOUR_WALLET_ADDRESS</pre>
             <h3>Creating a validator</h3>
             <pre
               class="guide_code_large"
             ><code>nibid tx staking create-validator \
---amount=1000000unibi \
---pubkey=$(nibid tendermint show-validator) \
---moniker="$NIBIRU_NODENAME" \
---chain-id=nibiru-testnet-1 \
---commission-rate="0.1" \
---commission-max-rate="0.10" \
---commission-max-change-rate="0.01" \
---min-self-delegation="1000000" \
---fees=10000unibi \
---from=wallet \
--y</code></pre>
+--amount 1000000unibi \
+--from $NIBIRU_WALLET \
+--commission-max-change-rate "0.01" \
+--commission-max-rate "0.2" \
+--commission-rate "0.05" \
+--min-self-delegation "1" \
+--pubkey  $(nibid tendermint show-validator) \
+--moniker $NIBIRU_MONIKER \
+--chain-id $NIBIRU_CHAIN_ID \
+--fees 10000unibi</code></pre>
           </div>
         </div>
         <div
@@ -177,36 +297,35 @@ wget -q -O nibiru.sh https://raw.githubusercontent.com/nodesshablya/nibiru_shabl
             <h3>Restart node:</h3>
             <pre>systemctl restart nibid</pre>
             <h3>Check your node status:</h3>
-            <pre>curl localhost:26657/status</pre>
-            <h3>
-              Check node synchronization, if results false – node is
-              synchronized
-            </h3>
-            <pre>
-curl -s localhost:26657/status | jq .result.sync_info.catching_up</pre
-            >
+            <pre>curl -s localhost:${NIBIRU_PORT}657/status</pre>
             <h3>Get your valoper address:</h3>
             <pre>nibid keys show wallet --bech val -a</pre>
-            <h3>
-              Bond more tokens (if you want increase your validator stake you
-              should bond more to your valoper address):
-            </h3>
+
+            <h3>Withdraw all rewards</h3>
             <pre>
-nibid tx staking delegate YOUR_VALOPER_ADDRESS 10000000unibi --from wallet --chain-id nibiru-testnet-1 --fees 5000unibi</pre
+nibid tx distribution withdraw-rewards $NIBIRU_VALOPER_ADDRESS --from $NIBIRU_WALLET --commission --chain-id $NIBIRU_CHAIN_ID --gas auto --gas-adjustment 1.3</pre
             >
-            <h3>Active validators list:</h3>
+            <h3>Delegate stake</h3>
             <pre>
-nibid query staking validators --limit 2000 -o json | jq -r '.validators[] | select(.status=="BOND_STATUS_BONDED") | [.operator_address, .status, (.tokens|tonumber / pow(10; 6)), .description.moniker] | @csv' | column -t -s"," | sort -k3 -n -r</pre
+nibid tx staking delegate $NIBIRU_VALOPER_ADDRESS 2000000unibi --from $NIBIRU_WALLET --chain-id $NIBIRU_CHAIN_ID --gas=auto --gas-adjustment 1.3</pre
             >
-            <h3>Inactive validators list:</h3>
+            <h3>Check jailing info</h3>
             <pre>
-nibid query staking validators --limit 2000 -o json | jq -r '.validators[] | select(.status=="BOND_STATUS_UNBONDED") | [.operator_address, .status, (.tokens|tonumber / pow(10; 6)), .description.moniker] | @csv' | column -t -s"," | sort -k3 -n -r</pre
+nibid q slashing signing-info $(nibid tendermint show-validator)</pre
+            >
+            <h3>Unjail validator</h3>
+            <pre>
+nibid tx slashing unjail --broadcast-mode=block --from $NIBIRU_WALLET --chain-id $NIBIRU_CHAIN_ID --gas auto --gas-adjustment 1.5</pre
             >
             <h3>Remove node:</h3>
             <pre class="guide_code_large">
-systemctl stop nibid
-systemctl disable nibid
-rm -rf $(which nibid) ~/.nibid ~/nibiru</pre
+sudo systemctl stop nibid
+sudo systemctl disable nibid
+sudo rm -rf /etc/systemd/system/nibid*
+sudo rm $(which nibid)
+sudo rm -rf $HOME/.nibid
+sudo rm -fr $HOME/nibiru
+sed -i "/NIBIRU_/d" $HOME/.bash_profile</pre
             >
           </div>
         </div>
