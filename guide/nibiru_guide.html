@@ -305,11 +305,11 @@ source $HOME/.bash_profile</pre
 
             <h3>Withdraw all rewards</h3>
             <pre>
-nibid tx distribution withdraw-rewards $NIBIRU_VALOPER_ADDRESS --from $NIBIRU_WALLET --commission --chain-id $NIBIRU_CHAIN_ID --gas auto --gas-adjustment 1.3</pre
+nibid tx distribution withdraw-rewards YOUR_NIBIRU_VALOPER_ADDRESS --from wallet --commission --chain-id $NIBIRU_CHAIN_ID --gas auto --gas-adjustment 1.3</pre
             >
             <h3>Delegate stake</h3>
             <pre>
-nibid tx staking delegate $NIBIRU_VALOPER_ADDRESS 2000000unibi --from $NIBIRU_WALLET --chain-id $NIBIRU_CHAIN_ID --gas=auto --gas-adjustment 1.3</pre
+nibid tx staking delegate YOUR_NIBIRU_VALOPER_ADDRESS 2000000unibi --from wallet --chain-id $NIBIRU_CHAIN_ID --gas=auto --gas-adjustment 1.3</pre
             >
             <h3>Check jailing info</h3>
             <pre>
@@ -317,7 +317,7 @@ nibid q slashing signing-info $(nibid tendermint show-validator)</pre
             >
             <h3>Unjail validator</h3>
             <pre>
-nibid tx slashing unjail --broadcast-mode=block --from $NIBIRU_WALLET --chain-id $NIBIRU_CHAIN_ID --gas auto --gas-adjustment 1.5</pre
+nibid tx slashing unjail --broadcast-mode=block --from wallet --chain-id $NIBIRU_CHAIN_ID --gas auto --gas-adjustment 1.5</pre
             >
             <h3>Remove node:</h3>
             <pre class="guide_code_large">
