@@ -165,42 +165,24 @@ ironfish config:set blockGraffiti $IRONFISH_NODENAME
           aria-labelledby="v-pills-settings-tab"
         >
           <div class="guide_install">
-            <h3>You can check the node logs with the command:</h3>
-            <pre>journalctl -u nibid -f</pre>
-            <h3>Restart node:</h3>
-            <pre>systemctl restart nibid</pre>
-            <h3>Check your node status:</h3>
-            <pre>curl -s localhost:${NIBIRU_PORT}657/status</pre>
-            <h3>Get your valoper address:</h3>
-            <pre>nibid keys show wallet --bech val -a</pre>
+            <h3>Create wallet</h3>
+            <pre>ironfish wallet:create wallet</pre>
+            <h3>Export wallet</h3>
+            <pre>ironfish wallet:export wallet</pre>
+            <h3>Export wallet with seed phase</h3>
+            <pre>ironfish wallet:export wallet --mnemonic --language=English</pre>
+            <h3>Get your wallet address</h3>
+            <pre>ironfish wallet:address wallet</pre>
 
-            <h3>Withdraw all rewards</h3>
-            <pre>
-nibid tx distribution withdraw-rewards YOUR_NIBIRU_VALOPER_ADDRESS --from wallet --chain-id nibiru-testnet-2 --fees 5000unibi</pre
-            >
-            <h3>Delegate stake</h3>
-            <pre>
-nibid tx staking delegate YOUR_NIBIRU_VALOPER_ADDRESS 10000000unibi --from wallet --chain-id nibiru-testnet-2 --fees 5000unibi
-</pre
-            >
-            <h3>Check jailing info</h3>
-            <pre>
-nibid q slashing signing-info $(nibid tendermint show-validator)</pre
-            >
-            <h3>Unjail validator</h3>
-            <pre>
-nibid tx slashing unjail --broadcast-mode=block --from wallet --chain-id nibiru-testnet-2 --fees 5000unibi</pre
-            >
-            <h3>Remove node:</h3>
-            <pre class="guide_code_large">
-sudo systemctl stop nibid
-sudo systemctl disable nibid
-sudo rm -rf /etc/systemd/system/nibid*
-sudo rm $(which nibid)
-sudo rm -rf $HOME/.nibid
-sudo rm -fr $HOME/nibiru
-sed -i "/NIBIRU_/d" $HOME/.bash_profile</pre
-            >
+            <h3>Stop Ironfish node</h3>
+            <pre>sudo service ironfishd stop</pre>
+            <h3>Update Ironfish CLI</h3>
+            <pre>sudo npm update -g ironfish</pre>
+            <h3>Restart Ironfish node</h3>
+            <pre>sudo systemctl restart ironfishd</pre>
+            <h3>Check status</h3>
+            <pre>ironfish status -f</pre>
+            
           </div>
         </div>
         
