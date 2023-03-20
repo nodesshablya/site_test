@@ -29,18 +29,22 @@ body {
 }
 
 .card-img-overlay {
-  background: rgba(0, 0, 0, 0.7);
-}
-
-.card-img-overlay:hover,
-.card-text:hover,
-.card-title:hover {
   background: rgba(0, 0, 0, 0);
   opacity: 0;
   -webkit-transition: all 0.3s ease;
   -moz-transition: all 0.3s ease;
   -o-transition: all 0.3s ease;
   transition: all 0.3s ease;
+}
+
+.card-img-overlay:hover {
+  background: rgba(0, 0, 0, 0.7);
+}
+
+.card-img-overlay:hover,
+.card-text:hover,
+.card-title:hover {
+  opacity: 1;
 }
 
 h2 {
