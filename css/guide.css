@@ -139,6 +139,11 @@ body::-webkit-scrollbar-thumb {
   border: 3px solid #000; /* creates padding around scroll thumb */
 }
 
+iframe {
+  width: 700px;
+  height: 400px;
+}
+
 @media (max-width: 961px) {
   .d-flex {
     margin-left: 10px;
@@ -177,7 +182,7 @@ body::-webkit-scrollbar-thumb {
   }
 
   iframe {
-    width: 230px;
+    width: 65%;
     height: 230px;
   }
 }
