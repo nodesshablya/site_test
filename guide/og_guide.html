@@ -133,114 +133,110 @@
             </a>
           </div>
           <div class="guide_install">
-            <h3>Installing packages</h3>
+            <h3>Delete old node data</h3>
             <pre class="guide_code_large">
-sudo apt update && \
-sudo apt install curl git jq build-essential gcc unzip wget lz4 -y</pre
+sudo systemctl stop ogd
+sudo systemctl disable ogd
+sudo rm /etc/systemd/system/ogd.service
+rm -rf $HOME/.evmosd $HOME/0g-evmos</pre
             >
             <h3>
-              Installing GO
+              Download 0g repository
             </h3>
             <pre class="guide_code_large">
-cd $HOME && \
-ver="1.21.3" && \
-wget "https://golang.org/dl/go$ver.linux-amd64.tar.gz" && \
-sudo rm -rf /usr/local/go && \
-sudo tar -C /usr/local -xzf "go$ver.linux-amd64.tar.gz" && \
-rm "go$ver.linux-amd64.tar.gz" && \
-echo "export PATH=$PATH:/usr/local/go/bin:$HOME/go/bin" >> ~/.bash_profile && \
-source ~/.bash_profile && \
-go version</pre
+git clone -b v0.1.0 https://github.com/0glabs/0g-chain.git
+./0g-chain/networks/testnet/install.sh
+source .profile</pre
             >
 
-            <h3>Installing evmosd</h3>
+            <h3>Making the network configuration</h3>
             <pre class="guide_code_large">
-git clone https://github.com/0glabs/0g-evmos.git
-cd 0g-evmos
-git checkout v1.0.0-testnet
-make install
-evmosd version</pre
+0gchaind config chain-id zgtendermint_16600-1
+              </pre
             >
-            <h3>Setting variables</h3>
+            <h3>Change it to the name of your validator and paste it into the console</h3>
             <pre class="guide_code_large">
-              # Customize if you need
-echo 'export MONIKER="NAME_YOUR_NODE"' >> ~/.bash_profile
-echo 'export CHAIN_ID="zgtendermint_9000-1"' >> ~/.bash_profile
-echo 'export WALLET_NAME="wallet"' >> ~/.bash_profile
-echo 'export RPC_PORT="26657"' >> ~/.bash_profile
-source $HOME/.bash_profile</pre
+0gchaind init NAME_FOR_YOUR_VALIDATOR --chain-id zgtendermint_16600-1
+              </pre
             >
-            <h3>Node initialisation</h3>
+            <h3>Installing the Genesis file</h3>
             <pre class="guide_code_large">
-cd $HOME
-evmosd init $MONIKER --chain-id $CHAIN_ID
-evmosd config chain-id $CHAIN_ID
-evmosd config node tcp://localhost:$RPC_PORT
-evmosd config keyring-backend os </pre
-            >
-            <h3>Download the genesis file</h3>
-            <pre class="guide_code_large">
-wget https://github.com/0glabs/0g-evmos/releases/download/v1.0.0-testnet/genesis.json -O $HOME/.evmosd/config/genesis.json</pre
+sudo apt install -y unzip wget
+rm ~/.0gchain/config/genesis.json
+wget -P ~/.0gchain/config https://github.com/0glabs/0g-chain/releases/download/v0.1.0/genesis.json
+              </pre
             >
             <h3>Adding peers and seeds</h3>
             <pre class="guide_code_large">
-PEERS="1248487ea585730cdf5d3c32e0c2a43ad0cda973@peer-zero-gravity-testnet.trusted-point.com:26326" && \
-SEEDS="8c01665f88896bca44e8902a30e4278bed08033f@54.241.167.190:26656,b288e8b37f4b0dbd9a03e8ce926cd9c801aacf27@54.176.175.48:26656,8e20e8e88d504e67c7a3a58c2ea31d965aa2a890@54.193.250.204:26656,e50ac888b35175bfd4f999697bdeb5b7b52bfc06@54.215.187.94:26656" && \
-sed -i -e "s/^seeds *=.*/seeds = \"$SEEDS\"/; s/^persistent_peers *=.*/persistent_peers = \"$PEERS\"/" $HOME/.evmosd/config/config.toml</pre
-            >
-            <h3>Minimum gas setting</h3>
-            <pre class="guide_code_large">
-sed -i "s/^minimum-gas-prices *=.*/minimum-gas-prices = \"0.00252aevmos\"/" $HOME/.evmosd/config/app.toml</pre
-            >
-            <h3>Activate the indexer</h3>
-            <pre class="guide_code_large">
-sed -i "s/^indexer *=.*/indexer = \"kv\"/" $HOME/.evmosd/config/config.toml</pre
-            >
+PEERS="c4d619f6088cb0b24b4ab43a0510bf9251ab5d7f@54.241.167.190:26656,44d11d4ba92a01b520923f51632d2450984d5886@54.176.175.48:26656,f2693dd86766b5bf8fd6ab87e2e970d564d20aff@54.193.250.204:26656,f878d40c538c8c23653a5b70f615f8dccec6fb9f@54.215.187.94:26656,41143f378016a05e1fa4fa8aa028035a82761b48@154.12.235.67:46656"
+SEEDS="c4d619f6088cb0b24b4ab43a0510bf9251ab5d7f@54.241.167.190:26656,44d11d4ba92a01b520923f51632d2450984d5886@54.176.175.48:26656,f2693dd86766b5bf8fd6ab87e2e970d564d20aff@54.193.250.204:26656,f878d40c538c8c23653a5b70f615f8dccec6fb9f@54.215.187.94:26656,41143f378016a05e1fa4fa8aa028035a82761b48@154.12.235.67:46656"
+              
+sed -i -e "s/^seeds =.*/seeds = \"$SEEDS\"/; s/^persistent_peers =.*/persistent_peers = \"$PEERS\"/" $HOME/.0gchain/config/config.toml
+
             <h3>Create a service file</h3>
             <pre class="guide_code_large">
-sudo tee /etc/systemd/system/ogd.service > /dev/null 
-[Unit]
-Description=OG Node
-After=network.target
+              sudo tee /etc/systemd/system/0gchaind.service > /dev/null <pre><<EOF</pre>
+              [Unit]
+              Description=OG Validator Node
+              After=network.target
               
-Service]
-User=$USER
-Type=simple
-ExecStart=$(which evmosd) start --home $HOME/.evmosd
-Restart=on-failure
-LimitNOFILE=65535
+              [Service]
+              User=$USER
+              Type=simple
+              ExecStart=$(which 0gchaind) start --home $HOME/.0gchain
+              Restart=on-failure
+              LimitNOFILE=65535
               
-[Install]
-WantedBy=multi-user.target
-EOF
+              [Install]
+              WantedBy=multi-user.target
+              EOF
+              
 </pre>
-            <h3>Starting our node</h3>
+            <h3>Service restart</h3>
             <pre class="guide_code_large">
 sudo systemctl daemon-reload && \
-sudo systemctl enable ogd && \
-sudo systemctl restart ogd && \
-sudo journalctl -u ogd -f -o cat</pre
+sudo systemctl enable 0gchaind && \
+sudo systemctl restart 0gchaind && \
+sudo journalctl -u 0gchaind -f -o cat
+              </pre
             >
 
-            <h3>Stop Node</h3>
+            <h3>Creating a wallet</h3>
             <pre class="guide_code_large">
-sudo systemctl stop ogd</pre
+0gchaind keys add wallet --eth
+              </pre
             >
-            <h3>Save priv_validator_state.json</h3>
+            <h3>Getting the address to get the coins from the faucet</h3>
+            <h4>*After this command, you will be given a private key in the console, we add it to Metamask (And get our address to receive tokens).</h4>
             <pre class="guide_code_large">
-cp $HOME/.evmosd/data/priv_validator_state.json $HOME/.evmosd/priv_validator_state.json.backup</pre
+0gchaind keys unsafe-export-eth-key wallet
+              </pre
             >
-            <h3>Reset data</h3>
+            <h3>Check synchronization</h3>
             <pre class="guide_code_large">
-evmosd tendermint unsafe-reset-all --home $HOME/.evmosd --keep-addr-book</pre
+curl -s localhost:26657/status | jq .result.sync_info.catching_up
+              </pre
             >
-            <h3>Transfer files from the archive</h3>
+            <h3>Creating a validator (Only after full synchronization)</h3>
             <pre class="guide_code_large">
-curl https://snapshots-testnet.nodejumper.io/0g-testnet/0g-testnet_latest.tar.lz4 | lz4 -dc - | tar -xf - -C $HOME/.evmosd</pre
+0gchaind tx staking create-validator \
+--amount=1000000ua0gi \
+--pubkey=$(0gchaind tendermint show-validator) \
+--moniker="НАЗВАНИЕ_ВАШЕГО_ВАЛИДАТОРА " \
+--chain-id="zgtendermint_16600-1" \
+--commission-rate="0.10" \
+--commission-max-rate="0.20" \
+--commission-max-change-rate="0.01" \
+--min-self-delegation="1000000" \
+--gas "500000" \
+--gas-prices="50ua0gi" \
+--from=wallet -y
+            </pre
             >
-            <h3>Restore priv_validator_state.json</h3>
+            <h3>Get the address of the validator</h3>
             <pre class="guide_code_large">
-mv $HOME/.evmosd/priv_validator_state.json.backup $HOME/.evmosd/data/priv_validator_state.json</pre
+0gchaind q staking validator $(0gchaind keys show wallet --bech val -a)
+              </pre
             >
             <h3>Restart Node</h3>
             <pre class="guide_code_large">
@@ -296,16 +292,21 @@ root/.evmosd/config/</pre>
       >
         <div class="guide_install">
           <h3>Log output</h3>
-          <pre>sudo journalctl -u ogd -f -o cat</pre>
-          <h3>Balance check</h3>
-          <pre>evmosd q bank balances $(evmosd keys show $WALLET_NAME -a)</pre>
+          <pre>sudo journalctl -u 0gchaind -f -o cat</pre>
           <h3>Node restart</h3>
-          <pre>sudo systemctl restart ogd</pre>
+          <pre>sudo systemctl restart 0gchaind</pre>
           <h3>Get your valoper address</h3>
-          <pre>evmosd keys show $WALLET_NAME --bech val -a</pre>
+          <pre>0gchaind keys show $WALLET_NAME --bech val -a</pre>
 
           <h3>Sending tokens to the stake in your validator</h3>
-          <pre>evmosd tx staking delegate $(evmosd keys show $WALLET_NAME --bech val -a)  ВАШЕ_КОЛИЧЕСТВО_МОНЕТaevmos --from $WALLET_NAME --gas=500000 --gas-prices=99999aevmos -y</pre
+          <pre>0gchaind tx staking delegate YOUR_VALIDATOR_ADDRESS AMOUNTS_TOKENSua0gi \
+            --from wallet \
+            --chain-id zgtendermint_16600-1 \
+            --gas-adjustment 1.4 \
+            --gas auto \
+            --gas-prices 0.0025ua0gi \
+            -y
+            </pre
           >
         </div>
       </div>
