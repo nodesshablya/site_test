@@ -175,7 +175,7 @@ sed -i -e "s/^seeds =.*/seeds = \"$SEEDS\"/; s/^persistent_peers =.*/persistent_
 
             <h3>Create a service file</h3>
             <pre class="guide_code_large">
-              sudo tee /etc/systemd/system/0gchaind.service > /dev/null <pre><<EOF</pre>
+              sudo tee /etc/systemd/system/0gchaind.service > /dev/null
               [Unit]
               Description=OG Validator Node
               After=network.target
