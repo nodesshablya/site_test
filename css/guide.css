@@ -7,15 +7,15 @@ body {
   background-color: black !important;
   font-family: "Montserrat", sans-serif;
   overflow-x: hidden;
+  color: white; /* Текст по умолчанию белый */
 }
 
 .nav-link {
   color: white !important;
-  font-family: "Montserrat", sans-serif;
 }
 
 .nav-link:hover {
-  color: #adb5bd !important;
+  color: #adb5bd !important; /* Серая подсветка при наведении */
 }
 
 .logo_shablya img {
@@ -23,7 +23,7 @@ body {
 }
 
 .nav_shablya_links {
-  border-color: red !important;
+  border-color: white !important; /* Белая граница навигации */
 }
 
 #guide_navs {
@@ -41,7 +41,7 @@ img {
 }
 
 .nav-link.active {
-  color: black !important;
+  color: black !important; /* Черный текст для активной ссылки */
 }
 
 .tab-content {
@@ -50,7 +50,6 @@ img {
   width: 100%;
   text-align: center;
   padding-left: 280px;
-  color: white;
 }
 
 svg {
@@ -79,16 +78,16 @@ svg {
 }
 
 .out_link {
-  color: #0d6efd !important;
+  color: #0d6efd !important; /* Синий для ссылок, можно заменить на черный */
 }
 
 a {
-  color: #fff !important;
+  color: white !important; /* Белый текст для ссылок */
   text-decoration: none !important;
 }
 
 a:hover {
-  color: gray !important;
+  color: gray !important; /* Серый текст при наведении */
   text-decoration: none !important;
 }
 
@@ -102,14 +101,15 @@ a:hover {
 }
 
 .guide_install pre {
-  font-size: 25px;
-  background-color: #fff;
-  color: #000;
+  font-size: 20px;
+  background-color: #f0f0f0; /* Белый фон */
+  color: black; /* Черный текст */
   padding: 1rem 1.5rem;
   width: 100%;
   font-weight: 700;
   border-radius: 10px;
   margin-left: 10px;
+  border: 1px solid #ced4da; /* Легкая рамка */
 }
 
 .guide_img {
@@ -123,25 +123,27 @@ a:hover {
 
 .guide_rent img {
   width: 150px;
+ 
 }
 
 body::-webkit-scrollbar {
-  width: 12px; /* width of the entire scrollbar */
+  width: 12px; /* Ширина всей полосы прокрутки */
 }
 
 body::-webkit-scrollbar-track {
-  background: rgb(0, 0, 0); /* color of the tracking area */
+  background: rgb(0, 0, 0); /* Цвет трековой области */
 }
 
 body::-webkit-scrollbar-thumb {
-  background-color: #fff; /* color of the scroll thumb */
-  border-radius: 20px; /* roundness of the scroll thumb */
-  border: 3px solid #000; /* creates padding around scroll thumb */
+  background-color: white; /* Цвет ползунка */
+  border-radius: 20px; /* Округленность ползунка */
+  border: 3px solid black; /* Создает отступ вокруг ползунка */
 }
 
 iframe {
   width: 700px;
   height: 400px;
+ 
 }
 
 @media (max-width: 961px) {
@@ -149,6 +151,7 @@ iframe {
     margin-left: 10px;
     font-size: 15px;
   }
+  
   img {
     width: 105px;
     align-items: center;
@@ -184,5 +187,163 @@ iframe {
   iframe {
     width: 65%;
     height: 230px;
+  }
+}
+
+.rounded-circle {
+  margin-bottom: 15px;
+}
+
+.code-block {
+  position: relative;
+  margin-bottom: 20px;
+}
+
+pre {
+  position: relative;
+  padding: 1rem 1.5rem;
+  background-color: #f8f9fa; /* Светло-серый фон */
+  border: 1px solid #ced4da; /* Светло-серая рамка */
+  border-radius: 10px;
+}
+
+.copy-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  padding: 5px 10px;
+  background-color: #007bff; /* Синий для кнопки */
+  color: white;
+  border: none;
+  border-radius: 5px;
+  font-size: 14px;
+  cursor: pointer;
+  z-index: 1;
+  transition: background-color 0.3s ease, transform 0.3s ease; /* Плавная смена цвета и анимация */
+}
+
+.copy-btn:hover {
+  background-color: #0056b3; /* Темно-синий при наведении */
+}
+
+.copy-btn i {
+  transition: transform 0.3s ease; /* Анимация изменения иконки */
+}
+
+.copy-btn.copied {
+  background-color: #28a745; /* Зеленый при копировании */
+}
+
+.copy-btn.copied i {
+  transform: rotate(360deg); /* Плавная анимация вращения иконки */
+}
+
+.system-specs {
+  margin: 20px;
+  padding: 20px;
+  background-color: rgba(255, 255, 255, 0.1); /* Полупрозрачный белый фон */
+  border-radius: 10px;
+  color: white;
+}
+
+.system-specs h3 {
+  margin-bottom: 15px;
+  text-align: center;
+}
+
+.system-specs table {
+  width: 100%;
+  border-collapse: collapse; /* Убирает промежутки между ячейками */
+}
+
+.system-specs td {
+  padding: 10px;
+  border: 1px solid white; /* Белая граница ячеек */
+}
+
+.system-specs td:first-child {
+  font-weight: bold; /* Жирный текст для названия спецификации */
+}
+
+.thin-text {
+  font-weight: 300; /* Тонкий вес шрифта */
+  font-size: 17px;  /* Меньший размер текста, если нужно */
+  color: #aaa;      /* Серый цвет для более мягкого вида */
+}
+
+
+
+.chain-bar-container {
+  background-color: #1d1f21;
+  border-radius: 8px;
+  padding: 10px 10px 0px 15px; /* Дополнительное пространство вокруг элементов */
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+  margin-bottom: 10px;
+  font-size: 0.9em;
+  
+}
+
+/* Логотип */
+.logo-image {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+}
+
+/* Ключевые метки */
+.key {
+  font-weight: bold;
+  color: #ffffff;
+  margin-right: 5px;
+  font-size: 0.7em;
+}
+
+/* Значения */
+.value {
+  color: #c7c7c7;
+  font-size: 0.7em;
+}
+
+/* Пары (ключ + значение) */
+.pair {
+  display: flex;
+  align-items: center;
+  margin-right: 15px; /* Отступы между блоками */
+}
+
+/* Статусный круг */
+.shadow-pulse-circle {
+  border-radius: 50%;
+  width: 24px;
+  height: 24px;
+  margin-left: 5px;
+  background-color: #28a745; /* Зеленый для синхронизированного состояния */
+  animation: pulse 1.5s infinite;
+  margin-top: -10px;
+}
+
+/* Анимация свечения */
+@keyframes pulse {
+  0% {
+    box-shadow: 0 0 5px rgba(40, 167, 69, 0.5);
+  }
+  50% {
+    box-shadow: 0 0 15px rgba(40, 167, 69, 1);
+  }
+  100% {
+    box-shadow: 0 0 5px rgba(40, 167, 69, 0.5);
+  }
+}
+
+/* Статус несинхронизированного состояния */
+.unsynced {
+  background-color: #dc3545; /* Красный для несинхронизированного состояния */
+  animation: none; /* Убираем анимацию */
+}
+
+/* Медиазапрос для мобильных устройств */
+@media (max-width: 768px) {
+  .pair {
+    margin-right: 5px; /* Уменьшаем отступы для маленьких экранов */
   }
 }
