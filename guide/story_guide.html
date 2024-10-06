@@ -142,7 +142,15 @@
           
           <div class="guide_install">
 
+            <h2>Automatic Installation</h2>
+            <div class="code-block">
+              <pre class="guide_code_large"><code class="language-bash">wget -q -O StoryNodeAutomation.sh https://snapshotstory.shablya.io/StoryNodeAutomation.sh && sudo chmod +x StoryNodeAutomation.sh && ./StoryNodeAutomation.sh</code></pre>
+              <button class="copy-btn" onclick="copyToClipboard(this)">
+                <i class="fas fa-copy"></i>
+              </button>
+          </div>
 
+             <h2>Manual Installation</h2>
             <h3>Install dependencies</h3>
             <div class="code-block">
                 <pre class="guide_code_large"><code class="language-bash">sudo apt update
@@ -304,16 +312,16 @@ sudo systemctl --no-pager status story-geth && sudo systemctl --no-pager status 
               
                 <div class="chain-bar-container d-flex align-items-center justify-content-between">
                     <div id="chain-bar" class="nj-chain-bar d-flex align-items-center justify-content-between w-100">
-                        <!-- Логотип -->
+                    
                
         
-                        <!-- Chain ID -->
+                        
                         <div class="pair d-flex align-items-center">
                             <p class="key">Chain ID:</p>
                             <p id="chain-id" class="value">iliad-0</p>
                         </div>
         
-                        <!-- RPC статус -->
+                       
                         <div class="pair d-flex align-items-center">
                             <p class="key">RPC status:</p>
                             <div class="rpc-status-container">
@@ -321,7 +329,7 @@ sudo systemctl --no-pager status story-geth && sudo systemctl --no-pager status 
                             </div>
                         </div>
         
-                        <!-- Высота блока -->
+                      
                         <div class="pair d-flex align-items-center">
                             <p class="key">Block Height:</p>
                             <p id="block-height" class="value">1165900</p>
@@ -329,6 +337,14 @@ sudo systemctl --no-pager status story-geth && sudo systemctl --no-pager status 
                     </div>
                 </div>
 
+                <h3>Automatic Service</h3>
+                <p class="thin-text">This script allows you to update peers, manage the address book, check your node’s synchronization, and download snapshots</p>
+                <div class="code-block">
+                  <pre class="guide_code_large"><code class="language-bash">wget -q -O StoryNodeAutomation.sh https://snapshotstory.shablya.io/StoryNodeAutomation.sh && sudo chmod +x StoryNodeAutomation.sh && ./StoryNodeAutomation.sh</code></pre>
+                  <button class="copy-btn" onclick="copyToClipboard(this)">
+                    <i class="fas fa-copy"></i>
+                  </button>
+              </div>
 
                 <h3>Check sync status</h3>
                 <div class="code-block">
