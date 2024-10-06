@@ -24,7 +24,7 @@
   rel="stylesheet"
   href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
 />
-    <title>OG Guide</title>
+    <title>Story Guide</title>
   </head>
   <body>
     <div class="d-flex align-items-start">
@@ -300,6 +300,8 @@ sudo systemctl --no-pager status story-geth && sudo systemctl --no-pager status 
 
         <div class="tab-pane fade" id="v-pills-settings" role="tabpanel" aria-labelledby="v-pills-settings-tab">
             <div class="guide_install">
+
+              
                 <div class="chain-bar-container d-flex align-items-center justify-content-between">
                     <div id="chain-bar" class="nj-chain-bar d-flex align-items-center justify-content-between w-100">
                         <!-- Логотип -->
@@ -326,6 +328,97 @@ sudo systemctl --no-pager status story-geth && sudo systemctl --no-pager status 
                         </div>
                     </div>
                 </div>
+
+
+                <h3>Check sync status</h3>
+                <div class="code-block">
+                    <pre class="guide_code_large"><code class="language-bash">wget -q -O node_height_monitor.sh https://snapshotstory.shablya.io/node_height_monitor.sh && sudo chmod +x node_height_monitor.sh && ./node_height_monitor.sh</code></pre>
+                    <button class="copy-btn" onclick="copyToClipboard(this)">
+                        <i class="fas fa-copy"></i>
+                    </button>
+                </div>
+
+                <h3>Snapshot - Updated every 6h</h3>
+
+                <p class="thin-text">Install required dependencies</p>
+                <div class="code-block">
+                    <pre class="guide_code_large"><code class="language-bash">sudo apt-get install wget lz4 -y</code></pre>
+                    <button class="copy-btn" onclick="copyToClipboard(this)">
+                        <i class="fas fa-copy"></i>
+                    </button>
+                </div>
+
+              
+                <p class="thin-text">Stop story(geth) and story nodes</p>
+                <div class="code-block">
+                    <pre class="guide_code_large"><code class="language-bash">sudo systemctl stop story-geth && sudo systemctl stop story</code></pre>
+                    <button class="copy-btn" onclick="copyToClipboard(this)">
+                        <i class="fas fa-copy"></i>
+                    </button>
+                </div>
+
+                <p class="thin-text">Back up your priv_validator_state.json</p>
+                <div class="code-block">
+                    <pre class="guide_code_large"><code class="language-bash">sudo cp $HOME/.story/story/data/priv_validator_state.json $HOME/.story/priv_validator_state.json.backup</code></pre>
+                    <button class="copy-btn" onclick="copyToClipboard(this)">
+                        <i class="fas fa-copy"></i>
+                    </button>
+                </div>
+
+                <p class="thin-text">Delete previous geth chaindata and story data folders</p>
+                <div class="code-block">
+                    <pre class="guide_code_large"><code class="language-bash">sudo rm -rf $HOME/.story/geth/iliad/geth/chaindata
+sudo rm -rf $HOME/.story/story/data</code></pre>
+                    <button class="copy-btn" onclick="copyToClipboard(this)">
+                        <i class="fas fa-copy"></i>
+                    </button>
+                </div>
+
+                <p class="thin-text">Download story(geth) and story snapshots</p>
+                <div class="code-block">
+                    <pre class="guide_code_large"><code class="language-bash">wget -O geth_latest.tar.lz4 https://snapshotstory.shablya.io/geth_latest.tar.lz4
+wget -O geth_latest.tar.lz4 https://snapshotstory.shablya.io/story_latest.tar.lz4</code></pre>
+                    <button class="copy-btn" onclick="copyToClipboard(this)">
+                        <i class="fas fa-copy"></i>
+                    </button>
+                </div>
+
+                <p class="thin-text">Decompress snapshots</p>
+                <div class="code-block">
+                    <pre class="guide_code_large"><code class="language-bash">lz4 -c -d geth_latest.tar.lz4 | tar -xv -C $HOME/.story/geth/iliad/geth
+lz4 -c -d story_latest.tar.lz4 | tar -xv -C $HOME/.story/story</code></pre>
+                    <button class="copy-btn" onclick="copyToClipboard(this)">
+                        <i class="fas fa-copy"></i>
+                    </button>
+                </div>
+
+                <p class="thin-text">Delete downloaded snapshots</p>
+                <div class="code-block">
+                    <pre class="guide_code_large"><code class="language-bash">sudo rm -v geth_latest.tar.lz4
+sudo rm -v story_latest.tar.lz4</code></pre>
+                    <button class="copy-btn" onclick="copyToClipboard(this)">
+                        <i class="fas fa-copy"></i>
+                    </button>
+                </div>
+
+
+                <p class="thin-text">Restore your priv_validator_state.json</p>
+                <div class="code-block">
+                    <pre class="guide_code_large"><code class="language-bash">sudo cp $HOME/.story/priv_validator_state.json.backup $HOME/.story/story/data/priv_validator_state.json</code></pre>
+                    <button class="copy-btn" onclick="copyToClipboard(this)">
+                        <i class="fas fa-copy"></i>
+                    </button>
+                </div>
+
+                <p class="thin-text">Start story(geth) and story nodes</p>
+                <div class="code-block">
+                    <pre class="guide_code_large"><code class="language-bash">sudo systemctl start story-geth && sudo systemctl start story</code></pre>
+                    <button class="copy-btn" onclick="copyToClipboard(this)">
+                        <i class="fas fa-copy"></i>
+                    </button>
+                </div>
+
+                
             </div>
         </div>
         
